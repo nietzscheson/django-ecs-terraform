@@ -1,0 +1,45 @@
+
+   
+version: '3.9'
+
+services:
+#  core:
+#    image: ${CORE_CONTAINER_REPOSITORY_NAME}:${CORE_CONTAINER_TAG}
+#    build:
+#      context: ./core
+#      target: base
+#      cache_from:
+#          - ${CORE_CONTAINER_REPOSITORY_NAME}:${CORE_CONTAINER_TAG}
+#      args:
+#        ### Database
+#        DATABASE_USER: ${DATABASE_USER}
+#        DATABASE_NAME: ${DATABASE_NAME}
+#        DATABASE_PASS: ${DATABASE_PASS}
+#        DATABASE_HOST: ${DATABASE_HOST}
+#        DATABASE_PORT: ${DATABASE_PORT}
+#    container_name: core
+#    volumes:
+#      - ./core:/home/core
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#  postgres:
+#    image: postgres:13.2-alpine
+#    container_name: postgres
+#    restart: unless-stopped
+#    ports:
+#        - 5432:5432
+#    environment:
+#        POSTGRES_PASSWORD: ${DATABASE_PASS}
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - ./nginx:/usr/share/nginx/html
+#      cache_from:
+#        - 299264538740.dkr.ecr.us-west-1.amazonaws.com/nginx:latest
