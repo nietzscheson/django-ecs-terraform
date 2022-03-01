@@ -37,7 +37,7 @@ services:
 #      timeout: 5s
 #      retries: 5
   nginx:
-    image: ${ECR_REGISTRY}nginx:${NGINX_CONTAINER_TAG}
+    image: ${ECR_REGISTRY}nginx:${NGINX_REPOSITORY_IMAGE_TAG}
     hostname: nginx
     container_name: nginx
     ports:
