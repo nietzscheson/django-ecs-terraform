@@ -37,7 +37,7 @@ services:
 #      timeout: 5s
 #      retries: 5
   nginx:
-    image: 299264538740.dkr.ecr.us-west-1.amazonaws.com/nginx:latest
+    image: ${ECR_REGISTRY}nginx:${NGINX_CONTAINER_TAG}
     hostname: nginx
     container_name: nginx
     ports:
