@@ -1,0 +1,18 @@
+version: '3.9'
+
+x-aws-vpc: ${VPC_ID}
+x-aws-cluster: ${ECS_CLUSTER_ID}
+x-aws-loadbalancer: ${LOAD_BALANCER_ID}
+
+services:
+  nginx:
+    image: ${ECR_REGISTRY}nginx:${NGINX_REPOSITORY_IMAGE_TAG}
+    container_name: nginx
+    ports:
+      - 80:80
+#    deploy:
+#      replicas: 2
+#      update_config:
+#        parallelism: 2
+#        delay: 10s
+#        order: stop-first
