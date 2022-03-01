@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "ecs-cluster" {
-  name                 = "${var.ecs_cluster_name}_auto_scaling_group"
+  name                 = "${var.name}-auto-scaling-group"
   min_size             = var.autoscale_min
   max_size             = var.autoscale_max
   desired_capacity     = var.autoscale_desired

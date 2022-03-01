@@ -1,27 +1,27 @@
 resource "aws_iam_role" "ecs-host-role" {
-  name               = "ecs_host_role_prod"
+  name               = "${var.name}-ecs-host-role"
   assume_role_policy = file("policies/ecs-role.json")
 }
 
 resource "aws_iam_role_policy" "ecs-instance-role-policy" {
-  name   = "ecs_instance_role_policy"
+  name   = "${var.name}-ecs-instance-role-policy"
   policy = file("policies/ecs-instance-role-policy.json")
   role   = aws_iam_role.ecs-host-role.id
 }
 
 resource "aws_iam_role" "ecs-service-role" {
-  name               = "ecs_service_role_prod"
+  name               = "${var.name}-ecs-service-role"
   assume_role_policy = file("policies/ecs-role.json")
 }
 
 resource "aws_iam_role_policy" "ecs-service-role-policy" {
-  name   = "ecs_service_role_policy"
+  name   = "${var.name}-ecs-service-role-policy"
   policy = file("policies/ecs-service-role-policy.json")
   role   = aws_iam_role.ecs-service-role.id
 }
 
 resource "aws_iam_instance_profile" "ecs" {
-  name = "ecs_instance_profile_prod"
+  name = "${var.name}-ecs-instance-profile"
   path = "/"
   role = aws_iam_role.ecs-host-role.name
 }

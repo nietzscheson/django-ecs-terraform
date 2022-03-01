@@ -1,3 +1,3 @@
 output "alb_hostname" {
-  value = aws_lb.production.dns_name
+  value = aws_lb.load_balancer.dns_name
 }
