@@ -51,5 +51,5 @@ terraform.apply: terraform.plan
 	terraform -chdir=terraform apply -auto-approve
 terraform.destroy: terraform.plan
 	terraform -chdir=terraform destroy
-ecr_login:
-	aws-vault exec nietzscheson -- aws ecr get-login-password --region us-west-1 | docker login -u AWS --password-stdin 299264538740.dkr.ecr.us-west-1.amazonaws.com
+ecr.login:
+	aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 299264538740.dkr.ecr.us-west-1.amazonaws.com
