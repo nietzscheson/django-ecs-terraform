@@ -1,6 +1,6 @@
 # Production Load Balancer
 resource "aws_lb" "load_balancer" {
-  name               = "${var.ecs_cluster_name}"
+  name               = "${var.name}"
   load_balancer_type = "application"
   internal           = false
   security_groups    = [aws_security_group.load-balancer.id]
@@ -9,7 +9,7 @@ resource "aws_lb" "load_balancer" {
 
 # Target group
 resource "aws_alb_target_group" "default-target-group" {
-  name     = "${var.ecs_cluster_name}-tg"
+  name     = "${var.name}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id

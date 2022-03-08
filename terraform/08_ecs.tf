@@ -1,16 +1,16 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.name}-cluster"
+  name = "${var.name}"
 }
 
 resource "aws_launch_configuration" "ecs" {
-  name                        = "${var.name}-cluster"
+  name                        = "${var.name}"
   image_id                    = lookup(var.amis, var.region)
   instance_type               = var.instance_type
   security_groups             = [aws_security_group.ecs.id]
   iam_instance_profile        = aws_iam_instance_profile.ecs.name
   key_name                    = aws_key_pair.key_pair.key_name
   associate_public_ip_address = true
-  user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.name}-cluster' > /etc/ecs/ecs.config"
+  user_data                   = "#!/bin/bash\necho ECS_CLUSTER='${var.name}' > /etc/ecs/ecs.config"
 }
 
 # data "template_file" "app" {

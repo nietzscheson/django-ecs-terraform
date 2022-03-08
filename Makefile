@@ -53,3 +53,5 @@ terraform.destroy: terraform.plan
 	terraform -chdir=terraform destroy
 ecr.login:
 	aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 299264538740.dkr.ecr.us-west-1.amazonaws.com
+ecs.deploy:
+	docker compose -f stack.yaml up -d
