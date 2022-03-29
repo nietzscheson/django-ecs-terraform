@@ -1,8 +1,8 @@
 version: '3.9'
 
-#x-aws-vpc: ${VPC_ID}
-#x-aws-cluster: ${ECS_CLUSTER_ID}
-#x-aws-loadbalancer: ${LOAD_BALANCER_ID}
+x-aws-vpc: ${VPC_ID}
+x-aws-cluster: ${ECS_CLUSTER_ID}
+x-aws-loadbalancer: ${LOAD_BALANCER_ID}
 
 services:
   nginx:
