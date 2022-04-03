@@ -1,0 +1,10 @@
+services:
+  app:
+    image: 856091704851.dkr.ecr.us-west-1.amazonaws.com/django-app:latest
+    build:
+      context: ./app
+
+  nginx:
+    image: 856091704851.dkr.ecr.us-west-1.amazonaws.com/nginx:latest
+    build:
+      context: ./nginx

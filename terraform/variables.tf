@@ -61,11 +61,11 @@ variable "instance_type" {
 }
 variable "docker_image_url_django" {
   description = "Docker image to run in the ECS cluster"
-  default     = "<AWS_ACCOUNT_ID>.dkr.ecr.us-west-1.amazonaws.com/django-app:latest"
+  default     = "856091704851.dkr.ecr.us-west-1.amazonaws.com/django-app:latest"
 }
 variable "docker_image_url_nginx" {
   description = "Docker image to run in the ECS cluster"
-  default     = "<AWS_ACCOUNT_ID>.dkr.ecr.us-west-1.amazonaws.com/nginx:latest"
+  default     = "856091704851.dkr.ecr.us-west-1.amazonaws.com/nginx:latest"
 }
 variable "app_count" {
   description = "Number of Docker containers to run"
@@ -73,7 +73,7 @@ variable "app_count" {
 }
 variable "allowed_hosts" {
   description = "Domain name for allowed hosts"
-  default     = "YOUR DOMAIN NAME"
+  default     = "*"
 }
 
 
@@ -112,14 +112,15 @@ variable "autoscale_desired" {
 
 variable "rds_db_name" {
   description = "RDS database name"
-  default     = "mydb"
+  default     = "postgres"
 }
 variable "rds_username" {
   description = "RDS database username"
-  default     = "foo"
+  default     = "postgres"
 }
 variable "rds_password" {
   description = "RDS database password"
+  default = "uJ!L[)L:x0z<)%0R5^vwLly6s$8YfE?XD3b]KAd9"
 }
 variable "rds_instance_class" {
   description = "RDS instance type"
