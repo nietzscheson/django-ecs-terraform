@@ -23,10 +23,10 @@ data "template_file" "default" {
     docker_image_url_django = replace(aws_ecr_repository.django.repository_url, "https://", "")
     docker_image_url_nginx  = replace(aws_ecr_repository.nginx.repository_url, "https://", "")
     region                  = var.region
-    rds_db_name             = var.rds_db_name
-    rds_username            = var.rds_username
-    rds_password            = var.rds_password
-    rds_hostname            = aws_db_instance.default.address
+    database_name             = var.database_name
+    database_user            = var.database_user
+    database_pass            = random_password.database.result
+    database_host            = aws_db_instance.default.address
     allowed_hosts           = var.allowed_hosts
     name                    = local.name
   }

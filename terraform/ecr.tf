@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "django" {
   name                 = "${local.name}-django"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -24,6 +25,7 @@ resource "aws_ecr_repository" "django" {
 resource "aws_ecr_repository" "nginx" {
   name                 = "${local.name}-nginx"
   image_tag_mutability = "MUTABLE"
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true

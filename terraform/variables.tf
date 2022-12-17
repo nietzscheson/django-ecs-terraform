@@ -111,17 +111,13 @@ variable "autoscale_desired" {
 
 # rds
 
-variable "rds_db_name" {
+variable "database_name" {
   description = "RDS database name"
-  default     = "mydb"
+  default     = "postgres"
 }
-variable "rds_username" {
+variable "database_user" {
   description = "RDS database username"
-  default     = "foo"
-}
-variable "rds_password" {
-  description = "password"
-  default = "password"
+  default     = "postgres"
 }
 variable "rds_instance_class" {
   description = "RDS instance type"

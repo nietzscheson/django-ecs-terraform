@@ -15,23 +15,23 @@
     ],
     "environment": [
       {
-        "name": "RDS_DB_NAME",
-        "value": "${rds_db_name}"
+        "name": "DATABASE_NAME",
+        "value": "${database_name}"
       },
       {
-        "name": "RDS_USERNAME",
-        "value": "${rds_username}"
+        "name": "DATABASE_USER",
+        "value": "${database_user}"
       },
       {
-        "name": "RDS_PASSWORD",
-        "value": "${rds_password}"
+        "name": "DATABASE_PASS",
+        "value": "${database_pass}"
       },
       {
-        "name": "RDS_HOSTNAME",
-        "value": "${rds_hostname}"
+        "name": "DATABASE_HOST",
+        "value": "${database_host}"
       },
       {
-        "name": "RDS_PORT",
+        "name": "DATABASE_PORT",
         "value": "5432"
       },
       {

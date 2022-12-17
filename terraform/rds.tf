@@ -5,9 +5,9 @@ resource "aws_db_subnet_group" "default" {
 
 resource "aws_db_instance" "default" {
   identifier              = local.name
-  db_name                    = var.rds_db_name
-  username                = var.rds_username
-  password                = var.rds_password
+  db_name                 = var.database_name
+  username                = var.database_user
+  password                = random_password.database.result
   port                    = "5432"
   engine                  = "postgres"
   engine_version          = "10.18"
