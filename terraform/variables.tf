@@ -125,7 +125,7 @@ variable "rds_password" {
 }
 variable "rds_instance_class" {
   description = "RDS instance type"
-  default     = "db.m5.large"
+  default     = "db.t2.micro"
 }
 
 
