@@ -10,15 +10,15 @@ resource "aws_launch_configuration" "default" {
   iam_instance_profile        = aws_iam_instance_profile.ecs.name
   key_name                    = aws_key_pair.default.key_name
   associate_public_ip_address = true
-  user_data = <<EOF
+  user_data                   = <<EOF
     #!/bin/bash
     echo ECS_CLUSTER='${local.name}' > /etc/ecs/ecs.config
   EOF
 }
 
 data "template_file" "default" {
-  template = file("templates/apps.json.tpl")
-  depends_on            = [aws_db_instance.default, aws_ecr_repository.django, aws_ecr_repository.nginx]
+  template   = file("templates/apps.json.tpl")
+  depends_on = [aws_db_instance.default, aws_ecr_repository.django, aws_ecr_repository.nginx]
   vars = {
     docker_image_url_django = replace(aws_ecr_repository.django.repository_url, "https://", "")
     docker_image_url_nginx  = replace(aws_ecr_repository.nginx.repository_url, "https://", "")
@@ -42,7 +42,7 @@ resource "aws_ecs_task_definition" "default" {
     host_path = "/usr/src/app/staticfiles/"
   }
 }
- 
+
 resource "aws_ecs_service" "default" {
   name            = local.name
   cluster         = aws_ecs_cluster.default.id

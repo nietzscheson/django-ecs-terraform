@@ -1,7 +1,7 @@
 # core
 
 locals {
-  name            = "terraclone-${terraform.workspace}"
+  name        = "terraclone-${terraform.workspace}"
   environment = terraform.workspace
 }
 
@@ -121,7 +121,7 @@ variable "rds_username" {
 }
 variable "rds_password" {
   description = "password"
-  default = "password"
+  default     = "password"
 }
 variable "rds_instance_class" {
   description = "RDS instance type"

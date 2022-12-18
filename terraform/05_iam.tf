@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs-host" {
-  name = "${local.name}-ecs-host"
+  name               = "${local.name}-ecs-host"
   assume_role_policy = file("policies/ecs-role.json")
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_iam_role_policy" "ecs-instance" {
 }
 
 resource "aws_iam_role" "ecs-service" {
-  name = "${local.name}-ecs-service"
+  name               = "${local.name}-ecs-service"
   assume_role_policy = file("policies/ecs-role.json")
 
   tags = {

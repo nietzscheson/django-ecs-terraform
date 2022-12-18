@@ -5,7 +5,7 @@ resource "aws_db_subnet_group" "default" {
 
 resource "aws_db_instance" "default" {
   identifier              = local.name
-  db_name                    = var.rds_db_name
+  db_name                 = var.rds_db_name
   username                = var.rds_username
   password                = var.rds_password
   port                    = "5432"
@@ -21,5 +21,5 @@ resource "aws_db_instance" "default" {
   publicly_accessible     = false
   backup_retention_period = 7
   skip_final_snapshot     = true
-  apply_immediately                   = true
+  apply_immediately       = true
 }
