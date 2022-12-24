@@ -20,8 +20,8 @@ data "template_file" "default" {
   template   = file("templates/apps.json.tpl")
   depends_on = [aws_db_instance.default, aws_ecr_repository.django, aws_ecr_repository.nginx]
   vars = {
-    docker_image_url_django = replace(aws_ecr_repository.django.repository_url, "https://", "")
-    docker_image_url_nginx  = replace(aws_ecr_repository.nginx.repository_url, "https://", "")
+    docker_image_url_django = replace("${aws_ecr_repository.django.repository_url}:latest", "https://", "")
+    docker_image_url_nginx  = replace("${aws_ecr_repository.nginx.repository_url}:latest", "https://", "")
     region                  = var.region
     rds_db_name             = var.rds_db_name
     rds_username            = var.rds_username
