@@ -93,7 +93,7 @@ resource "aws_nat_gateway" "default" {
   subnet_id     = aws_subnet.public_1.id
   depends_on    = [aws_eip.default]
 }
-resource "aws_route" "nat-gateway" {
+resource "aws_route" "nat_gateway" {
   route_table_id         = aws_route_table.private.id
   nat_gateway_id         = aws_nat_gateway.default.id
   destination_cidr_block = "0.0.0.0/0"
@@ -105,7 +105,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 # Route the public subnet traffic through the Internet Gateway
-resource "aws_route" "public-internet-gateway" {
+resource "aws_route" "internet_gateway" {
   route_table_id         = aws_route_table.public.id
   gateway_id             = aws_internet_gateway.default.id
   destination_cidr_block = "0.0.0.0/0"

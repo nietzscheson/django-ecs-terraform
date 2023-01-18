@@ -18,4 +18,6 @@ COPY . ./
 
 # ENTRYPOINT [ "sh", "./entrypoint.sh" ]
 
-CMD gunicorn -w 3 -b :8000 hello_django.wsgi:application
+RUN python manage.py collectstatic --no-input
+
+# CMD gunicorn -w 3 -b :8000 hello_django.wsgi:application

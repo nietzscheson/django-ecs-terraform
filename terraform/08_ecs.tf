@@ -47,9 +47,9 @@ resource "aws_ecs_service" "default" {
   name            = local.name
   cluster         = aws_ecs_cluster.default.id
   task_definition = aws_ecs_task_definition.default.arn
-  iam_role        = aws_iam_role.ecs-service.arn
+  iam_role        = aws_iam_role.ecs_service.arn
   desired_count   = var.app_count
-  depends_on      = [aws_iam_role_policy.ecs-service]
+  depends_on      = [aws_iam_role_policy.ecs_service]
 
   load_balancer {
     target_group_arn = aws_alb_target_group.default.arn
