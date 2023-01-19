@@ -16,31 +16,39 @@ resource "aws_launch_configuration" "default" {
   EOF
 }
 
-data "template_file" "default" {
-  template   = file("templates/apps.json.tpl")
-  depends_on = [aws_db_instance.default, aws_ecr_repository.django, aws_ecr_repository.nginx]
-  vars = {
-    docker_image_url_django = replace("${aws_ecr_repository.django.repository_url}:latest", "https://", "")
-    docker_image_url_nginx  = replace("${aws_ecr_repository.nginx.repository_url}:latest", "https://", "")
-    region                  = var.region
-    rds_db_name             = var.rds_db_name
-    rds_username            = var.rds_username
-    rds_password            = var.rds_password
-    rds_hostname            = aws_db_instance.default.address
-    allowed_hosts           = var.allowed_hosts
-    name                    = local.name
-  }
-}
-
 resource "aws_ecs_task_definition" "default" {
   family                = local.name
-  container_definitions = data.template_file.default.rendered
-  depends_on            = [aws_db_instance.default]
-
-  volume {
-    name      = "static_volume"
-    host_path = "/usr/src/app/staticfiles/"
-  }
+  execution_role_arn       = aws_iam_role.task_definition.arn
+  task_role_arn            = aws_iam_role.task_definition.arn
+  container_definitions = jsonencode([
+  {
+    "name": "django",
+    "image": "${replace("${aws_ecr_repository.django.repository_url}:latest", "https://", "")}",
+    "essential": true,
+    "cpu": 10,
+    "memory": 512,
+    "links": [],
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 0,
+        "protocol": "tcp"
+      }
+    ],
+    "command": ["gunicorn", "-w", "3", "-b", ":80", "hello_django.wsgi:application"],
+    "secrets": [
+      for key, value in jsondecode(aws_secretsmanager_secret_version.default.secret_string): 
+        {"name": key, "valueFrom": "${aws_secretsmanager_secret.default.arn}:${key}::"}
+    ]
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${aws_cloudwatch_log_group.default.name}",
+        "awslogs-region": "${var.region}",
+        "awslogs-stream-prefix": "django"
+      }
+    }
+  },])
 }
 
 resource "aws_ecs_service" "default" {
@@ -53,7 +61,7 @@ resource "aws_ecs_service" "default" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.default.arn
-    container_name   = "nginx"
+    container_name   = "django"
     container_port   = 80
   }
 }

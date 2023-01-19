@@ -6,6 +6,6 @@ output "load_balancer_hostname" {
 #   value = aws_instance.bastion.public_ip
 # }
 
-output "s3_name" {
-  value = aws_s3_bucket.default.id
-}
+# output "s3_name" {
+#   value = aws_s3_bucket.default.id
+# }

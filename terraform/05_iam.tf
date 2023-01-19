@@ -1,6 +1,5 @@
 resource "aws_iam_role" "ecs_host" {
   name               = "${local.name}-ecs-host"
-  # assume_role_policy = file("policies/ecs-role.json")
   assume_role_policy = jsonencode({
     "Version": "2008-10-17",
     "Statement": [
@@ -8,7 +7,7 @@ resource "aws_iam_role" "ecs_host" {
         "Action": "sts:AssumeRole",
         "Principal": {
           "Service": [
-            # "ecs.amazonaws.com",
+            "ecs.amazonaws.com",
             "ec2.amazonaws.com"
           ]
         },
@@ -23,7 +22,6 @@ resource "aws_iam_role" "ecs_host" {
 
 resource "aws_iam_role_policy" "ecs_instance" {
   name   = "${local.name}-ecs-instance"
-  # policy = file("policies/ecs-instance-role-policy.json")
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -48,7 +46,6 @@ resource "aws_iam_role_policy" "ecs_instance" {
 
 resource "aws_iam_role" "ecs_service" {
   name               = "${local.name}-ecs-service"
-  # assume_role_policy = file("policies/ecs-role.json")
   assume_role_policy = jsonencode({
     "Version": "2008-10-17",
     "Statement": [
@@ -71,7 +68,6 @@ resource "aws_iam_role" "ecs_service" {
 
 resource "aws_iam_role_policy" "ecs_service" {
   name   = "${local.name}-ecs-service"
-  # policy = file("policies/ecs-service-role-policy.json")
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -99,4 +95,55 @@ resource "aws_iam_instance_profile" "ecs" {
   name = local.name
   path = "/"
   role = aws_iam_role.ecs_host.name
+}
+
+resource "aws_iam_role" "task_definition" {
+  name               = "${local.name}-task-definition"
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "",
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ecs-tasks.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "task_definition" {
+  name = "${local.name}-task-definition"
+  role = aws_iam_role.task_definition.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "ecr:GetAuthorizationToken",
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "secretsmanager:GetSecretValue",
+            "s3:*"
+        ],
+        "Resource": "*"
+    }
+  ]
+}
+POLICY
 }

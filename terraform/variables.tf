@@ -135,3 +135,12 @@ variable "rds_instance_class" {
 #   description = "AWS Certificate Manager ARN for validated domain"
 #   default     = "YOUR ARN"
 # }
+
+
+variable "aws_access_key_id" {
+  type = string
+}
+
+variable "aws_secret_key" {
+  type = string
+}

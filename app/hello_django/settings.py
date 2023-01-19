@@ -16,6 +16,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = os.environ
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -72,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hello_django.wsgi.application'
 
+### A change here!
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -99,9 +101,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django_s3_sqlite",
         "NAME": "sqlite.db",
-        "BUCKET": "terraclone-default",
-        "AWS_S3_ACCESS_KEY": "AKIAULLMOPB2JR4EB4EO",  # optional, to lock down your S3 bucket to an IAM user
-        "AWS_S3_ACCESS_SECRET": "x16Z6MMeIu3Y1s/Z9p2z9wfG5HJO/+1J+k4EbKvL",  # optional, to lock down your S3 bucket to an IAM user
+        "BUCKET": env.get("AWS_ASSETS_BUCKET_NAME", None),
+        "AWS_S3_ACCESS_KEY": env.get("AWS_ACCESS_KEY_ID", None),  # optional, to lock down your S3 bucket to an IAM user
+        "AWS_S3_ACCESS_SECRET": env.get("AWS_SECRET_ACCESS_KEY", None),  # optional, to lock down your S3 bucket to an IAM user
     } 
 }
 
