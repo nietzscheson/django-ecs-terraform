@@ -18,6 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = os.environ
 
+USE_S3 = env.get("USE_S3", False)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -73,39 +75,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hello_django.wsgi.application'
 
-### A change here!
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# if 'RDS_DB_NAME' in os.environ:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': os.environ['RDS_DB_NAME'],
-#             'USER': os.environ['RDS_USERNAME'],
-#             'PASSWORD': os.environ['RDS_PASSWORD'],
-#             'HOST': os.environ['RDS_HOSTNAME'],
-#             'PORT': os.environ['RDS_PORT'],
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django_s3_sqlite",
-        "NAME": "sqlite.db",
-        "BUCKET": env.get("AWS_ASSETS_BUCKET_NAME", None),
-        "AWS_S3_ACCESS_KEY": env.get("AWS_ACCESS_KEY_ID", None),  # optional, to lock down your S3 bucket to an IAM user
-        "AWS_S3_ACCESS_SECRET": env.get("AWS_SECRET_ACCESS_KEY", None),  # optional, to lock down your S3 bucket to an IAM user
-    } 
-}
+if USE_S3:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django_s3_sqlite",
+            "NAME": "sqlite.db",
+            "BUCKET": env.get("AWS_STORAGE_BUCKET_NAME", None),
+            "AWS_S3_ACCESS_KEY": env.get("AWS_ACCESS_KEY_ID", None),
+            "AWS_S3_ACCESS_SECRET": env.get("AWS_SECRET_ACCESS_KEY", None),
+        } 
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -143,8 +129,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -118,8 +118,7 @@ resource "aws_iam_role_policy" "task_definition" {
   name = "${local.name}-task-definition"
   role = aws_iam_role.task_definition.id
 
-  policy = <<POLICY
-{
+  policy = jsonencode({
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -139,11 +138,11 @@ resource "aws_iam_role_policy" "task_definition" {
         "Effect": "Allow",
         "Action": [
             "secretsmanager:GetSecretValue",
+            "s3:*",
+            "ecr:*",
             "s3:*"
         ],
         "Resource": "*"
     }
-  ]
-}
-POLICY
+  ]})
 }
