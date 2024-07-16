@@ -14,6 +14,11 @@ variable "region" {
 
 # networking
 
+variable "cidr_block" {
+  description = "CIDR Block for Private Subnet 1"
+  default     = "10.0.0.0/16"
+}
+
 variable "public_subnet_1_cidr" {
   description = "CIDR Block for Public Subnet 1"
   default     = "10.0.1.0/24"

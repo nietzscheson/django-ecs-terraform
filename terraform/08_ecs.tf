@@ -78,7 +78,7 @@ resource "aws_ecs_service" "default" {
   network_configuration {
     assign_public_ip = true
     security_groups    = [aws_security_group.load_balancer.id]
-    subnets            = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+    subnets            = local.public_subnets_ids
   }
 
   health_check_grace_period_seconds = 300

@@ -4,7 +4,7 @@ resource "aws_lb" "default" {
   load_balancer_type = "application"
   internal           = false
   security_groups    = [aws_security_group.load_balancer.id]
-  subnets            = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+  subnets            = local.public_subnets_ids
 }
 
 # Target group
